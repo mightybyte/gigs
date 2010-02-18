@@ -1,0 +1,62 @@
+# This file outlines a list of commands that we should probably implement
+# eventually.  They are grouped by general categories and roughly listed
+# in the order that we should implement them.
+# NOTE: There is a lot more involved than just these commands.  One example
+# of this is ratings and ratings categories.  We could implement all of
+# these commands without ever having ratings.  But that should obviously be
+# done at some point in time.  I'm sure there are other similar issues
+# that we will encounter later.
+
+quit #A clean exit would be nice
+
+# Basic user interaction commands
+# Completion of these makes our server into a chat server
+who/players
+finger
+tell #We don't need channels to begin with, but we probably want them later
+shout
+
+# Basic game playing commands
+match #Used to create a game with a specific opponent
+accept
+decline
+pending
+draw #This was in my original list, but I've never seen a draw in pente
+abort
+resign
+flag
+adjourn
+refresh
+withdraw
+moretime
+adjourn #Eventually we'll want to add this, but we don't need it at first
+takeback
+
+# Multi-player game commands
+create #A special command is needed to create a multi-player game
+listopen #get a list of pending games that can be joined
+join #join a game
+start #start a game (can only be issued by the game owner)
+invite #invide a player to a pending game
+
+# Basic game observing commands
+games
+observe
+unobserve
+kibitz
+history
+examine
+unexamine
+journal #later
+jsave #later
+
+# Basic messaging commands (these can wait for awhile)
+message
+clearmessages
+
+#Other commands
+say #this command is really a tell to your current opponent
+set
+moves
+mailstored
+

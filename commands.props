@@ -1,0 +1,27 @@
+who = net.mightybyte.gigs.commands.WhoCommand
+tell = net.mightybyte.gigs.commands.TellCommand
+. = net.mightybyte.gigs.commands.RetellCommand
+shout = net.mightybyte.gigs.commands.ShoutCommand
+rlcom = net.mightybyte.gigs.commands.ReloadCommandsCommand
+
+abort = net.mightybyte.gigs.commands.AbortCommand
+accept = net.mightybyte.gigs.commands.AcceptCommand
+decline = net.mightybyte.gigs.commands.DeclineCommand
+match = net.mightybyte.gigs.commands.MatchCommand
+refresh = net.mightybyte.gigs.commands.RefreshCommand
+pending = net.mightybyte.gigs.commands.PendingCommand
+resign = net.mightybyte.gigs.commands.ResignCommand
+withdraw = net.mightybyte.gigs.commands.WithdrawCommand
+flag = net.mightybyte.gigs.commands.FlagCommand
+takeback = net.mightybyte.gigs.commands.TakebackCommand
+
+games = net.mightybyte.gigs.commands.ListGamesCommand
+observe = net.mightybyte.gigs.commands.ObserveCommand
+unobserve = net.mightybyte.gigs.commands.UnobserveCommand
+kibitz = net.mightybyte.gigs.commands.KibitzCommand
+whisper = net.mightybyte.gigs.commands.WhisperCommand
+
+create = net.mightybyte.gigs.commands.CreateGameCommand
+listopen = net.mightybyte.gigs.commands.ListOpenGamesCommand
+join = net.mightybyte.gigs.commands.JoinGameCommand
+start = net.mightybyte.gigs.commands.StartGameCommand
