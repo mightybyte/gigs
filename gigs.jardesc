@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="MacRoman" standalone="no"?>
+<jardesc>
+    <jar path="/Users/dougbeardsley/gigs.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/gigs/gigs.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=gigs/src&lt;net.mightybyte.gigs{GigsServer.java[GigsServer" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <folder path="/gigs/maps"/>
+        <file path="/gigs/commands.props"/>
+        <file path="/gigs/GameTypes.props"/>
+        <javaElement handleIdentifier="=gigs/src"/>
+        <folder path="/gigs/lib"/>
+    </selectedElements>
+</jardesc>
