@@ -73,7 +73,8 @@ public class ServerGame {
   }
 
   /**
-   * Add a player to this game. 
+   * Add a player to this game.
+   * 
    * @param player
    */
   public void addPlayer(String player) {
@@ -83,17 +84,19 @@ public class ServerGame {
     playerInfo.put(player, info);
     game.addPlayer(player);
   }
-  
+
   /**
    * Add an observer to this game.
+   * 
    * @param player
    */
   public void addObserver(String player) {
     observers.add(player);
   }
-  
+
   /**
    * Get the observers.
+   * 
    * @return the observers.
    */
   public List<String> getObservers() {
@@ -135,13 +138,15 @@ public class ServerGame {
 
   /**
    * Checks ot see if the move is well-formed.
-   * @param move the move
+   * 
+   * @param move
+   *          the move
    * @return true if the move is well-formed, false otherwise.
    */
   public boolean isWellFormedMove(String move) {
     return game.isWellFormedMove(move);
   }
-  
+
   /**
    * Makes the specified move for the specified player. If the move is illegal
    * then an IllegalArgumentException is thrown. If the move is legal, it is
@@ -160,8 +165,11 @@ public class ServerGame {
     // Subtract time from the players who moved
     long curTime = System.currentTimeMillis();
     for (String playerToMove : playersOnMove) {
-      PlayerInfo info = playerInfo.get(playerToMove);
-      info.timeLeft -= curTime - info.curTurnStartTime;
+      if (playerToMove == player) {
+        PlayerInfo info = playerInfo.get(playerToMove);
+        info.timeLeft -= curTime - info.curTurnStartTime;
+        System.err.println(playerToMove + " " + info.timeLeft);
+      }
     }
 
     Game g = game.copy();
@@ -171,17 +179,22 @@ public class ServerGame {
     if (newMove) {
       currentTurn++;
     }
-    System.out.println(player+" "+move);
+    System.out.println(player + " " + move);
     System.out.println(game.getCompleteState());
 
-    // Set turn start time for players who are now on move
-    playersOnMove = game.getPlayersOnMove();
-    for (String nextPlayer : playersOnMove) {
-      PlayerInfo info = playerInfo.get(nextPlayer);
-      info.curTurnStartTime = System.currentTimeMillis();
+    if (newMove) {
+      // Set turn start time for players who are now on move
+      playersOnMove = game.getPlayersOnMove();
+      for (String nextPlayer : playersOnMove) {
+        PlayerInfo info = playerInfo.get(nextPlayer);
+        info.curTurnStartTime = System.currentTimeMillis();
+      }
+      writeStateToAllPlayers();
+    } else {
+      writeToAllPlayers(player+" moved");
+      writeToAllObservers(player+" moved");
     }
 
-    writeStateToAllPlayers();
     if (game.isGameOver()) {
       writeToAllPlayers("{" + getGameString() + " " + game.getResultString()
           + "}");
@@ -289,7 +302,7 @@ public class ServerGame {
 
     long currentTime = System.currentTimeMillis();
     ClientConnection userCon = users.getUser(player).getConnection();
-    userCon.writelnToClient("\n"+game.getHumanReadableState(player));
+    userCon.writelnToClient("\n" + game.getHumanReadableState(player));
     for (String s2 : game.getPlayers()) {
       PlayerInfo info = playerInfo.get(s2);
       long t = info.timeLeft;
@@ -298,7 +311,7 @@ public class ServerGame {
       }
       long min = t / 1000 / 60;
       long sec = t / 1000 - min * 60;
-      if ( sec < 0 ) {
+      if (sec < 0) {
         min = -min;
         sec = -sec;
         userCon.writeToClient(s2 + " clock: (" + info.timeLeft + ") -" + min);
@@ -335,7 +348,7 @@ public class ServerGame {
       users.getUser(s).getConnection().writeToClientPrompt(str);
     }
   }
-  
+
   private static class PlayerInfo {
     public String player;
 

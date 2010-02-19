@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.mightybyte.gigs.game.Game;
@@ -18,6 +19,7 @@ public class TronGame implements Game {
 
   protected List<String> players;
   protected List<String> moves;
+  protected boolean[] isAlive;
   protected int[] playerPositions;
   protected int[] nextMove;
   protected int width;
@@ -30,6 +32,8 @@ public class TronGame implements Game {
     moves = new ArrayList<String>();
     playerPositions = new int[MAX_PLAYERS];
     nextMove = new int[MAX_PLAYERS];
+    isAlive = new boolean[MAX_PLAYERS];
+    Arrays.fill(isAlive, true);
   }
 
   public void init(String params) {
@@ -156,31 +160,32 @@ public class TronGame implements Game {
 
     int pos = playerPositions[playerNum];
 
-    if (move.compareTo("1") == 0 && playerPositions[playerNum] / width > 0) {
-      playerPositions[playerNum] -= width;
-    } else if (move.compareTo("2") == 0
-        && playerPositions[playerNum] % width < width - 1) {
-      playerPositions[playerNum] -= width;
-    } else if (move.compareTo("3") == 0
-        && playerPositions[playerNum] / width < height - 1) {
-      playerPositions[playerNum] += width;
-    } else if (move.compareTo("4") == 0
-        && playerPositions[playerNum] % width > 0) {
-      playerPositions[playerNum] += width;
+    if (move.compareTo("1") == 0 && pos >= width) {
+      nextMove[playerNum] = pos - width;
+    } else if (move.compareTo("2") == 0 && pos % width < width - 1) {
+      nextMove[playerNum] = pos + 1;
+    } else if (move.compareTo("3") == 0 && pos + width < width * height) {
+      nextMove[playerNum] = pos + width;
+    } else if (move.compareTo("4") == 0 && pos % width > 0) {
+      nextMove[playerNum] = pos - 1;
     } else {
       throw new IllegalArgumentException("Illegal move");
     }
 
-    isWall[pos] = true;
-
     for (int i = 0; i < MAX_PLAYERS; i++) {
-      if (nextMove[i] == -1)
+      if (nextMove[i] == -1) {
+        // Still some players left to move
         return false;
+      }
     }
+
+    // If we get here, then all the players have made their moves and we can
+    // update the board state.
 
     StringBuilder moveString = new StringBuilder();
     for (int i = 0; i < MAX_PLAYERS; i++) {
       moveString.append(Integer.toString(nextMove[i]) + " ");
+      isWall[playerPositions[i]] = true;
       playerPositions[i] = nextMove[i];
       nextMove[i] = -1;
     }
@@ -189,6 +194,15 @@ public class TronGame implements Game {
     return true;
   }
 
+  protected boolean hasCollided(int player) {
+    for (int j = 0; j < MAX_PLAYERS; j++) {
+      if (player != j && playerPositions[player] == playerPositions[j]) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   /**
    * Get a list containing the name of the player who is to move.
    * 
@@ -197,7 +211,7 @@ public class TronGame implements Game {
   public List<String> getPlayersOnMove() {
     List<String> list = new ArrayList<String>();
     for (int i = 0; i < MAX_PLAYERS; i++) {
-      if (nextMove[i] == -1) {
+      if (nextMove[i] == -1 && isAlive[i]) {
         list.add(players.get(i));
       }
     }
@@ -207,14 +221,7 @@ public class TronGame implements Game {
   public boolean isGameOver() {
     int alive = 0;
     for (int i = 0; i < MAX_PLAYERS; i++) {
-      boolean collided = false;
-      for (int j = 0; j < MAX_PLAYERS; j++) {
-        if (playerPositions[i] == playerPositions[j]) {
-          collided = true;
-          break;
-        }
-      }
-      if (!isWall[i] && !collided) {
+      if (isAlive[i] && !isWall[playerPositions[i]] && !hasCollided(i)) {
         alive++;
       }
     }
@@ -245,9 +252,23 @@ public class TronGame implements Game {
 
   public String getResultString() {
     if (this.isGameOver()) {
-      return " wins";
+      int winner = -1;
+      int count = 0;
+      
+      for (int i = 0; i < players.size(); i++) {
+        if ( isAlive[i] && !isWall[playerPositions[i]] && !hasCollided(i) ) {
+          winner = i;
+          count++;
+        }
+      }
+      
+      if ( count == 1 ) {
+        return players.get(winner)+" wins";
+      } else if ( count == 0 ) {
+        return "draw";
+      }
     }
-    return "";
+    return "in progress";
   }
 
   public String getHumanReadableState(String player) {
@@ -311,9 +332,10 @@ public class TronGame implements Game {
     for (String s : moves) {
       g.moves.add(s);
     }
-    System.arraycopy(playerPositions, 0, g.playerPositions, 0, playerPositions.length);
+    System.arraycopy(playerPositions, 0, g.playerPositions, 0,
+        playerPositions.length);
     System.arraycopy(nextMove, 0, g.nextMove, 0, nextMove.length);
-    g.isWall = new boolean[width*height];
+    g.isWall = new boolean[width * height];
     System.arraycopy(isWall, 0, g.isWall, 0, isWall.length);
 
     return g;
