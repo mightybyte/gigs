@@ -1,0 +1,23 @@
+
+Commands for playing games:
+
+match       challenge another player to a game
+accept      accept a challenge from another player
+decline     decline a challenge from another player
+resign      resign the current game
+
+
+Commands for viewing games:
+
+games       display a list of games currently in progress
+observe     watch another player's game
+unobserve   stop watching a game
+
+
+Commands for interacting with players:
+
+who         get a list of online players
+shout       send a message to all players
+tell        send a message to a single player
+.           repeat the last tell
+

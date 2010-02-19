@@ -52,9 +52,11 @@ public class MatchCommand implements Command {
       terminatingPlayer.getConnection().writelnToClient("");
       terminatingPlayer.getConnection().writelnToClient(
           "Challenge: " + originatingPlayer.getName() + " vs. "
-              + terminatingPlayer.getName() + " " + pendingGame.getGameType()
-              + " " + pendingGame.getTimeBase() + " "
-              + pendingGame.getTimeInc() + " " + param);
+              + terminatingPlayer.getName() + " "
+              + pendingGame.getTimeBase() + " "
+              + pendingGame.getTimeInc() + " "
+              + pendingGame.getGameType() + " " 
+              + param);
       terminatingPlayer
           .getConnection()
           .writeToClientPrompt(

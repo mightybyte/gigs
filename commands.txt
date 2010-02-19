@@ -25,7 +25,6 @@ draw #This was in my original list, but I've never seen a draw in pente
 abort
 resign
 flag
-adjourn
 refresh
 withdraw
 moretime

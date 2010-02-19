@@ -1,0 +1,7 @@
+
+GIGS Help
+---------
+
+help                   this help screen
+help commands          list all commands
+help <command>         get help for a specific command

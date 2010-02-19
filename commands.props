@@ -25,3 +25,5 @@ create = net.mightybyte.gigs.commands.CreateGameCommand
 listopen = net.mightybyte.gigs.commands.ListOpenGamesCommand
 join = net.mightybyte.gigs.commands.JoinGameCommand
 start = net.mightybyte.gigs.commands.StartGameCommand
+
+help = net.mightybyte.gigs.commands.HelpCommand

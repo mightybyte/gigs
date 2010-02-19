@@ -1,0 +1,12 @@
+match <user> <base> <inc> <gametype> [params]
+
+user - the user you want to challenge
+base - the number of minutes starting on each players clock
+inc  - the number of seconds that get added to the clock after each move
+gametype - the type of game to play
+params - optional parameters specific to each game type
+
+Game Types:
+
+tron
+  For tron games you can specify an optional map to use.

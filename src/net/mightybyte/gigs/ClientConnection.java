@@ -17,7 +17,7 @@ import net.mightybyte.gigs.game.ServerGame;
  */
 public class ClientConnection extends Thread {
 
-  private String prompt = "fips% ";
+  private String prompt = "gigs% ";
 
   private ServerState serverState = ServerState.getInstance();
 
@@ -155,7 +155,7 @@ public class ClientConnection extends Thread {
    * @param message
    */
   public void writeToClientPrompt(String message) {
-    socketPrintStream.print("\n"+message + "\n\r");
+    socketPrintStream.print("\n"+message + "\r\n");
     socketPrintStream.print(prompt);
   }
 
@@ -164,7 +164,7 @@ public class ClientConnection extends Thread {
   }
 
   public void writelnToClient(String message) {
-    socketPrintStream.print(message + "\n\r");
+    socketPrintStream.print(message + "\r\n");
   }
 
   public ConnectedUser getConnectedUser() {

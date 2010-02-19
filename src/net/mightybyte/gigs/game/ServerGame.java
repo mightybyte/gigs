@@ -168,7 +168,6 @@ public class ServerGame {
       if (playerToMove == player) {
         PlayerInfo info = playerInfo.get(playerToMove);
         info.timeLeft -= curTime - info.curTurnStartTime;
-        System.err.println(playerToMove + " " + info.timeLeft);
       }
     }
 
@@ -179,8 +178,6 @@ public class ServerGame {
     if (newMove) {
       currentTurn++;
     }
-    System.out.println(player + " " + move);
-    System.out.println(game.getCompleteState());
 
     if (newMove) {
       // Set turn start time for players who are now on move
