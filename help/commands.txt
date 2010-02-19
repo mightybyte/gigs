@@ -4,6 +4,7 @@ Commands for playing games:
 match       challenge another player to a game
 accept      accept a challenge from another player
 decline     decline a challenge from another player
+refresh     redisplay the board
 resign      resign the current game
 
 

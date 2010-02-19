@@ -19,7 +19,9 @@ games = net.mightybyte.gigs.commands.ListGamesCommand
 observe = net.mightybyte.gigs.commands.ObserveCommand
 unobserve = net.mightybyte.gigs.commands.UnobserveCommand
 kibitz = net.mightybyte.gigs.commands.KibitzCommand
+k = net.mightybyte.gigs.commands.KibitzCommand
 whisper = net.mightybyte.gigs.commands.WhisperCommand
+whi = net.mightybyte.gigs.commands.WhisperCommand
 
 create = net.mightybyte.gigs.commands.CreateGameCommand
 listopen = net.mightybyte.gigs.commands.ListOpenGamesCommand

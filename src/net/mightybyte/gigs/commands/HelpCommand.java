@@ -12,8 +12,6 @@ public class HelpCommand implements Command {
 
 	@Override
 	public void execute(ClientConnection connection, String args) {
-		System.out.println(args);
-		System.out.println(args.length());
 		if (args.length() == 0) {
 			writeHelpFile(connection, "help/main");
 		} else {
@@ -29,10 +27,11 @@ public class HelpCommand implements Command {
 			while ((line = fis.readLine()) != null) {
 				connection.writelnToClient(line);
 			}
+			
+			fis.close();
 		} catch (FileNotFoundException e) {
 			connection.writelnToClient("No help available for that command");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		connection.writeToClientPrompt("");
