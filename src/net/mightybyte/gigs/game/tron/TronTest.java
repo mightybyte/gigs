@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class TronTest {
+import org.apache.log4j.Logger;
 
+public class TronTest {
   /**
    * @param args
    */
@@ -41,7 +42,6 @@ public class TronTest {
         }
       }
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }

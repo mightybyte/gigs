@@ -11,12 +11,15 @@ import net.mightybyte.gigs.commands.Command;
 import net.mightybyte.gigs.commands.CommandMap;
 import net.mightybyte.gigs.game.ServerGame;
 
+import org.apache.log4j.Logger;
+
 /**
  * This class controls the I/O for a user. When the user enters a command this
  * thread processes that command.
  */
 public class ClientConnection extends Thread {
 
+  private static Logger logger = Logger.getLogger("gigs");
   private String prompt = "gigs% ";
 
   private ServerState serverState = ServerState.getInstance();
@@ -41,15 +44,14 @@ public class ClientConnection extends Thread {
       socketReader = new BufferedReader(new InputStreamReader(socket
           .getInputStream()));
 
-      System.out.println("User connected");
-
       boolean done = !authenticate();
 
       while (!done) {
         // This line should probably read the prompt from the user's
         // preferences, but we can do that later.
         String input = readFromClient();
-
+        logger.debug(connectedUser.getName()+": "+input);
+        
         if (input == null || "quit".equals(input)) {
           done = true;
         } else {
@@ -93,11 +95,11 @@ public class ClientConnection extends Thread {
         }
       }
 
-      System.out.println(this.connectedUser.getName() + " logged out");
+      logger.debug(this.connectedUser.getName() + " logged out");
       socket.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e.getMessage());
       try {
         if ( socket != null ) {
           socket.close();
@@ -126,7 +128,7 @@ public class ClientConnection extends Thread {
     connectedUser = new ConnectedUser(name, this);
     serverState.getUsers().addUser(connectedUser);
     writeToClientPrompt(name + " logged in");
-    System.out.println(name + " authenticated");
+    logger.debug(name + " authenticated");
     return true;
   }
 
@@ -143,7 +145,7 @@ public class ClientConnection extends Thread {
     try {
       str = socketReader.readLine();
     } catch (IOException e) {
-      System.err.println(e.getMessage());
+      logger.debug(e.getMessage());
     }
     return str;
   }

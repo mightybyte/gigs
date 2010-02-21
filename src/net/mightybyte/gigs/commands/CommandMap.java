@@ -9,9 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 public class CommandMap {
 	private static CommandMap instance = new CommandMap("commands.props");
-
+	private static Logger logger = Logger.getLogger("gigs");
 	private Map<String, Command> commands;
 
 	private String propsFile;
@@ -26,7 +28,7 @@ public class CommandMap {
 	}
 
 	public void loadCommands() {
-		System.out.println("Loading CommandMap");
+	  logger.debug("Loading CommandMap");
 
 		commands = new HashMap<String, Command>();
 		Properties props = new Properties();
@@ -46,10 +48,10 @@ public class CommandMap {
 				commands.put(s, cmd);
 			}
 		} catch (IOException e) {
-			System.err.println("Could not open " + propsFile);
+			logger.error("Could not open " + propsFile);
 		} catch (Exception e) {
-			System.err.println("Error in " + propsFile);
-			e.printStackTrace();
+			logger.error("Error in " + propsFile);
+			logger.error(e.getMessage());
 		}
 
 	}

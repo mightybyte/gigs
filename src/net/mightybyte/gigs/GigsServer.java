@@ -1,19 +1,24 @@
 package net.mightybyte.gigs;
 
-import java.net.*;
-import java.io.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 import net.mightybyte.gigs.commands.CommandMap;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 public class GigsServer {
 
+  private static Logger logger = Logger.getLogger("gigs");
   public final int PORT = 8000;
 
   /**
    * @param args
    */
   public static void main(String[] args) {
-    // TODO Auto-generated method stub
+    PropertyConfigurator.configure("logging.props");
     new GigsServer();
 
   }
@@ -25,7 +30,7 @@ public class GigsServer {
     
     CommandMap.getInstance();
     try {
-      System.out.println("Server started");
+      logger.debug("Server started");
       sksListener = new ServerSocket(PORT);
       while (true) {
         skcConnection = sksListener.accept();
