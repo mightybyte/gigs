@@ -11,14 +11,18 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class GigsServer {
 
-  private static Logger logger = Logger.getLogger("gigs");
-  public final int PORT = 8000;
+  public static int port = 8000;
+  private Logger logger;
 
   /**
    * @param args
    */
   public static void main(String[] args) {
     PropertyConfigurator.configure("logging.props");
+    
+    if ( args.length > 0 ) {
+      port = Integer.parseInt(args[0]);
+    }
     new GigsServer();
 
   }
@@ -28,10 +32,11 @@ public class GigsServer {
     Socket skcConnection;
     ClientConnection cc;
     
+    logger = Logger.getLogger("gigs");
     CommandMap.getInstance();
     try {
       logger.debug("Server started");
-      sksListener = new ServerSocket(PORT);
+      sksListener = new ServerSocket(port);
       while (true) {
         skcConnection = sksListener.accept();
         cc = new ClientConnection(skcConnection);

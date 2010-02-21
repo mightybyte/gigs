@@ -12,8 +12,8 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 public class CommandMap {
+  private static Logger logger = Logger.getLogger("gigs");
 	private static CommandMap instance = new CommandMap("commands.props");
-	private static Logger logger = Logger.getLogger("gigs");
 	private Map<String, Command> commands;
 
 	private String propsFile;

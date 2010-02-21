@@ -10,10 +10,12 @@
             <packagesToUnSeal/>
         </sealing>
     </manifest>
-    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+    <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
         <folder path="/gigs/maps"/>
-        <file path="/gigs/commands.props"/>
+        <file path="/gigs/logging.props"/>
+        <folder path="/gigs/help"/>
         <file path="/gigs/GameTypes.props"/>
+        <file path="/gigs/commands.props"/>
         <javaElement handleIdentifier="=gigs/src"/>
         <folder path="/gigs/lib"/>
     </selectedElements>
