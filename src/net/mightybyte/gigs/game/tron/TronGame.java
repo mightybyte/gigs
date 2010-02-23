@@ -134,7 +134,7 @@ public class TronGame implements Game {
    * @return true if the move looks like a pente move, false otherwise
    */
   public boolean isWellFormedMove(String move) {
-    return move.matches("[1-4]");
+    return move.matches("[1-4nsew]");
   }
 
   /**
@@ -161,13 +161,16 @@ public class TronGame implements Game {
 
     int pos = playerPositions[playerNum];
 
-    if (move.compareTo("1") == 0 && pos >= width) {
+    if ((move.compareTo("1") == 0 || move.compareTo("n") == 0) && pos >= width) {
       nextMove[playerNum] = pos - width;
-    } else if (move.compareTo("2") == 0 && pos % width < width - 1) {
+    } else if ((move.compareTo("2") == 0 || move.compareTo("e") == 0)
+        && pos % width < width - 1) {
       nextMove[playerNum] = pos + 1;
-    } else if (move.compareTo("3") == 0 && pos + width < width * height) {
+    } else if ((move.compareTo("3") == 0 || move.compareTo("s") == 0)
+        && pos + width < width * height) {
       nextMove[playerNum] = pos + width;
-    } else if (move.compareTo("4") == 0 && pos % width > 0) {
+    } else if ((move.compareTo("4") == 0 || move.compareTo("w") == 0)
+        && pos % width > 0) {
       nextMove[playerNum] = pos - 1;
     } else {
       throw new IllegalArgumentException("Illegal move");
@@ -203,7 +206,7 @@ public class TronGame implements Game {
     }
     return false;
   }
-  
+
   /**
    * Get a list containing the name of the player who is to move.
    * 
@@ -255,17 +258,17 @@ public class TronGame implements Game {
     if (this.isGameOver()) {
       int winner = -1;
       int count = 0;
-      
+
       for (int i = 0; i < players.size(); i++) {
-        if ( isAlive[i] && !isWall[playerPositions[i]] && !hasCollided(i) ) {
+        if (isAlive[i] && !isWall[playerPositions[i]] && !hasCollided(i)) {
           winner = i;
           count++;
         }
       }
-      
-      if ( count == 1 ) {
-        return players.get(winner)+" wins";
-      } else if ( count == 0 ) {
+
+      if (count == 1) {
+        return players.get(winner) + " wins";
+      } else if (count == 0) {
         return "draw";
       }
     }
@@ -278,7 +281,7 @@ public class TronGame implements Game {
     out.append(width);
     out.append(' ');
     out.append(height);
-    out.append("\r\n"+ServerGame.GAME_LINE_PREFIX);
+    out.append("\r\n" + ServerGame.GAME_LINE_PREFIX);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         int pos = i * width + j;
@@ -298,7 +301,7 @@ public class TronGame implements Game {
           }
         }
       }
-      out.append("\r\n"+ServerGame.GAME_LINE_PREFIX);
+      out.append("\r\n" + ServerGame.GAME_LINE_PREFIX);
     }
     return out.toString();
   }
