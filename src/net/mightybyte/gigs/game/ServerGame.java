@@ -13,6 +13,7 @@ import net.mightybyte.gigs.ServerState;
  * Maybe this class should be named ServerGame
  */
 public class ServerGame {
+  public static final String GAME_LINE_PREFIX = "~~~";
   private static ServerState serverState = ServerState.getInstance();
 
   private List<Game> gameHistory;

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.mightybyte.gigs.game.Game;
+import net.mightybyte.gigs.game.ServerGame;
 
 public class TronGame implements Game {
   /**
@@ -273,10 +274,11 @@ public class TronGame implements Game {
 
   public String getHumanReadableState(String player) {
     StringBuilder out = new StringBuilder();
+    out.append(ServerGame.GAME_LINE_PREFIX);
     out.append(width);
     out.append(' ');
     out.append(height);
-    out.append("\r\n");
+    out.append("\r\n"+ServerGame.GAME_LINE_PREFIX);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         int pos = i * width + j;
@@ -296,7 +298,7 @@ public class TronGame implements Game {
           }
         }
       }
-      out.append("\r\n");
+      out.append("\r\n"+ServerGame.GAME_LINE_PREFIX);
     }
     return out.toString();
   }
