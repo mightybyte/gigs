@@ -15,12 +15,12 @@ public class ConnectedUser {
    * List of games that the user is currently playing.
    */
   private List<Integer> currentGames;
-  
+
   /**
    * List of games that the user has joined but have not started yet.
    */
   private List<PendingGame> joinedGames;
-  
+
   /**
    * List of games that the user is observing.
    */
@@ -30,7 +30,7 @@ public class ConnectedUser {
    * List of incoming game requests
    */
   private List<PendingGame> incomingGames;
-  
+
   /**
    * Lost of outgoing game requests
    */
@@ -50,6 +50,37 @@ public class ConnectedUser {
     incomingGames = new ArrayList<PendingGame>();
     outgoingGames = new ArrayList<PendingGame>();
     lastTalkedTo = "";
+  }
+
+  public void cleanupUser() {
+    ServerState s = ServerState.getInstance();
+    for (int gameID : currentGames) {
+      s.removeGame(gameID);
+    }
+    currentGames.clear();
+    
+    for (int gameID : observedGames) {
+      s.getGame(gameID).removeObserver(name);
+    }
+    observedGames.clear();
+    
+    for (PendingGame g : joinedGames) {
+      g.removePlayer(name);
+    }
+    joinedGames.clear();
+
+    for (PendingGame g : incomingGames) {
+      g.removePlayer(name);
+      if ( g.getMaxPlayers() == 2 ) {
+        ServerState.getInstance().removePendingGame(g);
+      }
+    }
+    incomingGames.clear();
+
+    for (PendingGame g : outgoingGames) {
+      ServerState.getInstance().removePendingGame(g);
+    }
+    outgoingGames.clear();
   }
 
   public ClientConnection getConnection() {
@@ -105,7 +136,7 @@ public class ConnectedUser {
   public List<PendingGame> getOutgoingGames() {
     return outgoingGames;
   }
-  
+
   /**
    * Add a game to this player's list of games that are in progress.
    * 
@@ -118,12 +149,14 @@ public class ConnectedUser {
 
   /**
    * Add a game to the list of games that this player is observing.
-   * @param gameID the server game ID
+   * 
+   * @param gameID
+   *          the server game ID
    */
   public void addObservedGame(int gameID) {
     observedGames.add(gameID);
   }
-  
+
   /**
    * @return Returns the list of observed games.
    */
@@ -152,20 +185,20 @@ public class ConnectedUser {
   public void setLastTalkedTo(String lastTalkedTo) {
     this.lastTalkedTo = lastTalkedTo;
   }
-  
+
   /**
    * Updates the user to reflect joining a game
    */
   public void joinGame(PendingGame game) throws Exception {
-    if ( joinedGames.size() > 0 ) {
+    if (joinedGames.size() > 0) {
       throw new Exception("Error: You have already joined a game");
     }
     joinedGames.add(game);
     game.addPlayer(name);
   }
-  
+
   /**
-   * Updates the user information to start a joined game 
+   * Updates the user information to start a joined game
    */
   public void startGame(PendingGame pending, ServerGame game) {
     currentGames.add(game.getGameNumber());
@@ -175,11 +208,12 @@ public class ConnectedUser {
   /**
    * Starts the game owned by the user.
    * 
-   * @throws Exception if the user doesn't own any game
+   * @throws Exception
+   *           if the user doesn't own any game
    */
   public void initiateGameStart() throws Exception {
-    for ( PendingGame g : joinedGames ) {
-      if ( g.isOwner(name) ) {
+    for (PendingGame g : joinedGames) {
+      if (g.isOwner(name)) {
         g.start();
         break;
       }

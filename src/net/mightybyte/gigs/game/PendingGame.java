@@ -118,6 +118,21 @@ public class PendingGame {
   }
 
   /**
+   * Add a player to the game
+   * 
+   * @param player
+   *          the name of the player ot add
+   */
+  public void removePlayer(String player) {
+    List<String> players = serverGame.getPlayers(); 
+    for (String name : players) {
+      serverState.writeToPlayer(name, player + " left game ("
+          + (players.size() - 1) + " players total)");
+    }
+    serverGame.removePlayer(player);
+  }
+
+  /**
    * Gets the player list.
    * @return the player list
    */

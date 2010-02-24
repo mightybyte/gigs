@@ -1,7 +1,7 @@
 package net.mightybyte.gigs;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.mightybyte.gigs.game.GameFactory;
@@ -41,6 +41,7 @@ public class ServerState {
 
   /**
    * Get the current games that are in progress
+   * 
    * @return the games
    */
   public List<ServerGame> getCurrentGames() {
@@ -49,7 +50,9 @@ public class ServerState {
 
   /**
    * Get the ServerGame represented by the specified game ID.
-   * @param gameID the game ID
+   * 
+   * @param gameID
+   *          the game ID
    * @return The ServerGame
    */
   public ServerGame getGame(int gameID) {
@@ -57,7 +60,7 @@ public class ServerState {
   }
 
   /**
-   * Removes an in-progress game from the server.  This method does not do any
+   * Removes an in-progress game from the server. This method does not do any
    * ratings calculation or storage, so it is applicable to all commands that
    * end games.
    * 
@@ -92,9 +95,10 @@ public class ServerState {
     }
     return index;
   }
-  
+
   /**
    * Adds a new pending game
+   * 
    * @param game
    */
   public int addPendingGame(PendingGame game) {
@@ -111,18 +115,23 @@ public class ServerState {
     }
     return index;
   }
-  
+
   /**
    * Removes a pending game
-   * @param game the game to remove
+   * 
+   * @param game
+   *          the game to remove
    */
   public void removePendingGame(PendingGame game) {
     int index = pendingGames.indexOf(game);
-    pendingGames.set(index, null);
+    if (index != -1) {
+      pendingGames.set(index, null);
+    }
   }
 
   /**
    * Get the current games that are in progress
+   * 
    * @return the games
    */
   public Iterable<PendingGame> getPendingGames() {
@@ -131,7 +140,9 @@ public class ServerState {
 
   /**
    * Get the pending game represented by the specified game ID.
-   * @param gameID the game ID
+   * 
+   * @param gameID
+   *          the game ID
    * @return The ServerGame
    */
   public PendingGame getPendingGame(int gameID) {
@@ -139,7 +150,7 @@ public class ServerState {
   }
 
   public void writeToPlayer(String player, String message) {
-    users.getUser(player).getConnection().writeToClientPrompt("\n"+message);
+    users.getUser(player).getConnection().writeToClientPrompt("\n" + message);
   }
 
 }

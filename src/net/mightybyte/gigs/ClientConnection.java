@@ -134,6 +134,7 @@ public class ClientConnection extends Thread {
 
   private void cleanupConnection() {
     serverState.getUsers().removeUser(connectedUser.getName());
+    connectedUser.cleanupUser();
   }
 
   /**

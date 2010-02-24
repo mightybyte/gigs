@@ -66,6 +66,7 @@ public class ServerGame {
     for (PlayerInfo info : playerInfo.values()) {
       info.timeLeft = timeBase;
       info.curTurnStartTime = stime;
+      game.addPlayer(info.player);
     }
 
     currentTurn = 0;
@@ -83,7 +84,16 @@ public class ServerGame {
     info.player = player;
     info.timeLeft = timeBase;
     playerInfo.put(player, info);
-    game.addPlayer(player);
+  }
+
+  /**
+   * Remove a player from this game.  Probably only useful when the game is
+   * pending.
+   * 
+   * @param player
+   */
+  public void removePlayer(String player) {
+    playerInfo.remove(player);
   }
 
   /**
@@ -93,6 +103,15 @@ public class ServerGame {
    */
   public void addObserver(String player) {
     observers.add(player);
+  }
+
+  /**
+   * Add an observer to this game.
+   * 
+   * @param player
+   */
+  public void removeObserver(String player) {
+    observers.remove(player);
   }
 
   /**
