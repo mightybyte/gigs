@@ -1,7 +1,6 @@
 package net.mightybyte.gigs;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.mightybyte.gigs.game.GameFactory;
@@ -23,6 +22,7 @@ public class ServerState {
 
   private List<ServerGame> currentGames;
   private List<PendingGame> pendingGames;
+  private List<PendingGame> soughtGames;
 
   public static ServerState getInstance() {
     return instance;
@@ -33,6 +33,7 @@ public class ServerState {
     users = new CurrentUsers();
     currentGames = new ArrayList<ServerGame>();
     pendingGames = new ArrayList<PendingGame>();
+    soughtGames = new ArrayList<PendingGame>();
   }
 
   public CurrentUsers getUsers() {
@@ -82,18 +83,7 @@ public class ServerState {
    * @return The game ID
    */
   public int addNewGame(ServerGame game) {
-    int index = -1;
-    for (index = 0; index < currentGames.size(); index++) {
-      if (currentGames.get(index) == null) {
-        break;
-      }
-    }
-    if (index == currentGames.size()) {
-      currentGames.add(game);
-    } else {
-      currentGames.set(index, game);
-    }
-    return index;
+    return addGeneric(currentGames, game);
   }
 
   /**
@@ -102,18 +92,7 @@ public class ServerState {
    * @param game
    */
   public int addPendingGame(PendingGame game) {
-    int index = -1;
-    for (index = 0; index < pendingGames.size(); index++) {
-      if (pendingGames.get(index) == null) {
-        break;
-      }
-    }
-    if (index == currentGames.size()) {
-      pendingGames.add(game);
-    } else {
-      pendingGames.set(index, game);
-    }
-    return index;
+    return addGeneric(pendingGames, game);
   }
 
   /**
@@ -149,8 +128,70 @@ public class ServerState {
     return pendingGames.get(gameID);
   }
 
+  /**
+   * Removes a sought game
+   * 
+   * @param game
+   *          the game to remove
+   */
+  public void removeSoughtGame(PendingGame game) {
+    int index = soughtGames.indexOf(game);
+    if (index != -1) {
+      soughtGames.set(index, null);
+    }
+  }
+
+  /**
+   * Adds a new sought game
+   * 
+   * @param game
+   */
+  public int addSoughtGame(PendingGame game) {
+    return addGeneric(soughtGames, game);
+  }
+  
+  /**
+   * Get the current games that are in progress
+   * 
+   * @return the games
+   */
+  public List<PendingGame> getSoughtGames() {
+    return soughtGames;
+  }
+
+  /**
+   * Get the sought game represented by the specified game ID.
+   * 
+   * @param gameID
+   *          the game ID
+   * @return The ServerGame
+   */
+  public PendingGame getSoughtGame(int gameID) {
+    return soughtGames.get(gameID);
+  }
+
   public void writeToPlayer(String player, String message) {
     users.getUser(player).getConnection().writeToClientPrompt("\n" + message);
+  }
+
+  /**
+   * Adds a new pending game
+   * 
+   * @param game
+   */
+  public <T> int addGeneric(List<T> list, T game) {
+    int index = -1;
+    for (index = 0; index < list.size(); index++) {
+      if (list.get(index) == null) {
+        break;
+      }
+    }
+    if (index == list.size()) {
+      list.add(game);
+    } else {
+      list.set(index, game);
+    }
+    return index;
   }
 
 }
