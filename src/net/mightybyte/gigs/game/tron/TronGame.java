@@ -289,13 +289,24 @@ public class TronGame implements Game {
           out.append('#');
         } else {
           int k;
+          boolean before = true;
           for (k = 0; k < MAX_PLAYERS; k++) {
+            if (player.compareTo(players.get(k)) == 0) {
+              before = false;
+            }
             if (pos == playerPositions[k]) {
               break;
             }
           }
           if (k < MAX_PLAYERS) {
-            out.append(k + 1);
+            if (player.compareTo(players.get(k)) == 0) {
+              out.append(1);
+            } else {
+              if (before) {
+                k++;
+              }
+              out.append(k + 1);
+            }
           } else {
             out.append(' ');
           }

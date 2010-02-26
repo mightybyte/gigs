@@ -124,12 +124,13 @@ public class PendingGame {
    *          the name of the player ot add
    */
   public void removePlayer(String player) {
+    serverGame.removePlayer(player);
+
     List<String> players = serverGame.getPlayers(); 
     for (String name : players) {
       serverState.writeToPlayer(name, player + " left game ("
           + (players.size() - 1) + " players total)");
     }
-    serverGame.removePlayer(player);
   }
 
   /**

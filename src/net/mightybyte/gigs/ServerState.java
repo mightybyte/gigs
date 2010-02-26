@@ -70,9 +70,9 @@ public class ServerState {
   public void removeGame(int gameID) {
     ServerGame g = currentGames.get(gameID);
     currentGames.set(gameID, null);
-    for (String player : g.getPlayers()) {
-      users.getUser(player).getCurrentGames().remove(new Integer(gameID));
-    }
+//    for (String player : g.getPlayers()) {
+//      users.getUser(player).getCurrentGames().remove(new Integer(gameID));
+//    }
   }
 
   /**

@@ -331,7 +331,6 @@ public class ServerGame {
       if (onMove.contains(s2)) {
         t -= currentTime - info.curTurnStartTime;
       }
-      userCon.writeToClient("Player "+i+" ");
       long min = t / 1000 / 60;
       long sec = t / 1000 - min * 60;
       if (sec < 0) {
