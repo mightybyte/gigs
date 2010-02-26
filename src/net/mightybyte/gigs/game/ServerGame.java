@@ -23,7 +23,7 @@ public class ServerGame {
   private int gameNumber;
 
   private Game game;
-
+  private List<String> playerNames;
   private Map<String, PlayerInfo> playerInfo;
   private List<String> observers;
 
@@ -44,6 +44,7 @@ public class ServerGame {
   public ServerGame(PendingGame pendingGame) {
     gameHistory = new ArrayList<Game>();
     playerInfo = new HashMap<String, PlayerInfo>();
+    playerNames = new ArrayList<String>();
     observers = new ArrayList<String>();
     timeBase = pendingGame.getTimeBase() * 60 * 1000;
     timeInc = pendingGame.getTimeInc();
@@ -63,7 +64,8 @@ public class ServerGame {
    */
   public void start() {
     long stime = System.currentTimeMillis();
-    for (PlayerInfo info : playerInfo.values()) {
+    for (String p : playerNames) {
+      PlayerInfo info = playerInfo.get(p);
       info.timeLeft = timeBase;
       info.curTurnStartTime = stime;
       game.addPlayer(info.player);
@@ -84,6 +86,7 @@ public class ServerGame {
     info.player = player;
     info.timeLeft = timeBase;
     playerInfo.put(player, info);
+    playerNames.add(player);
   }
 
   /**
@@ -94,6 +97,7 @@ public class ServerGame {
    */
   public void removePlayer(String player) {
     playerInfo.remove(player);
+    playerNames.remove(player);
   }
 
   /**
@@ -128,7 +132,7 @@ public class ServerGame {
    * @return the players
    */
   public List<String> getPlayers() {
-    return game.getPlayers();
+    return playerNames;
   }
 
   /**
@@ -136,7 +140,7 @@ public class ServerGame {
    * @return the number of players
    */
   public int getNumPlayers() {
-    return game.getNumPlayers();
+    return playerNames.size();
   }
 
   /**
@@ -320,12 +324,14 @@ public class ServerGame {
     long currentTime = System.currentTimeMillis();
     ClientConnection userCon = users.getUser(player).getConnection();
     userCon.writelnToClient("\n" + game.getHumanReadableState(player));
+    int i = 1;
     for (String s2 : game.getPlayers()) {
       PlayerInfo info = playerInfo.get(s2);
       long t = info.timeLeft;
       if (onMove.contains(s2)) {
         t -= currentTime - info.curTurnStartTime;
       }
+      userCon.writeToClient("Player "+i+" ");
       long min = t / 1000 / 60;
       long sec = t / 1000 - min * 60;
       if (sec < 0) {
@@ -340,6 +346,7 @@ public class ServerGame {
       } else {
         userCon.writelnToClient(":0" + sec);
       }
+      i++;
     }
     userCon.writeToClientPrompt("");
   }

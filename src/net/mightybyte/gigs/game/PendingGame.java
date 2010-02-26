@@ -172,7 +172,7 @@ public class PendingGame {
    * @return the game full flag
    */
   public boolean isFull() {
-    return serverGame.getPlayers().size() == maxPlayers;
+    return serverGame.getNumPlayers() == maxPlayers;
   }
 
 }

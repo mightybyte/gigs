@@ -301,7 +301,10 @@ public class TronGame implements Game {
           }
         }
       }
-      out.append("\r\n" + ServerGame.GAME_LINE_PREFIX);
+      out.append("\r\n");
+      if (i < height - 1) {
+        out.append(ServerGame.GAME_LINE_PREFIX);
+      }
     }
     return out.toString();
   }

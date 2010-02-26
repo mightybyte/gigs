@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
   struct timeval tv;
   char buf[1024];
   int state = 0;
+  FILE *log;
 
   if (argc != 4) {
     printf("usage: %s host port command\n", argv[0]);
@@ -133,6 +134,9 @@ int main(int argc, char *argv[])
   for ( i = 0; i < 3; i++ ) {
     if ( in_fds[i] > maxFd ) maxFd = in_fds[i];
   }
+
+  log = fopen("tobot.log", "w");
+
   while (1) {
     FD_ZERO(&read_fds);
     FD_SET(in_fds[SERVER], &read_fds);
@@ -176,12 +180,22 @@ int main(int argc, char *argv[])
             if ( buf[j] == 10 ) state++;
           } else if ( state >= 1 && state <= 3 ) {
             if ( buf[j] == '~' ) state++;
+            else if ( buf[j] == 10 ) state = 1;
+            else state = 0;
           } else if ( state == 4 ) {
-            if ( buf[j] == 10 ) state=0;
+            if ( buf[j] == 10 ) state=1;
             write(fdToBot, buf+j, 1);
+            fwrite(buf+j, 1, 1, log);
+            fflush(log);
           }
         }
       } else {
+        if ( i == BOT ) {
+          fprintf(stdout, "FROM BOT: %s\n", buf);
+          fflush(stdout);
+          fprintf(log, "FROM BOT: %s\n", buf);
+          fflush(log);
+        }
         write(fdToServer, buf, len);
       }
     }
@@ -193,6 +207,7 @@ done:
       close(in_fds[i]);
   if (child)
     wait(NULL);
+  fclose(log);
   return (0);
 }
 
