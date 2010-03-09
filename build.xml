@@ -1,0 +1,35 @@
+<project>
+
+		<property name="libdir" value="lib"/>
+		<property name="bindir" value="bin"/>
+		<property name="docdir" value="doc"/>
+		<property name="srcdir" value="src"/>
+
+		<path id="classpath">
+				<fileset dir="${libdir}" includes="**/*.jar"/>
+		</path>
+
+    <target name="clean">
+        <delete>
+          <fileset dir="." casesensitive="yes">
+            <include name="*.jar"/>
+          </fileset>
+        </delete>
+				<delete dir="${docdir}"/>
+				<delete dir="${bindir}"/>
+    </target>
+
+    <target name="doc">
+      <mkdir dir="${docdir}"/>
+      <javadoc sourcepath="${srcdir}" destdir="${docdir}" classpathref="classpath"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${bindir}"/>
+        <javac srcdir="${srcdir}" destdir="${bindir}" classpathref="classpath"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="gigs.jar" basedir="${bindir}" />
+    </target>
+</project>
