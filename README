@@ -1,3 +1,27 @@
 GIGS stands for Generic Internet Game Server
 
-More info to come
+Quickstart
+----------
+
+1. Build the server
+   If you have ant, you can just run "ant compile" from the project root directory.
+2. Run the server
+   "java -cp bin:lib/log4j-1.2.15.jar net.mightybyte.gigs.GigsServer [port]"
+   (If you don't specify a port, it defaults to 8000.)
+
+
+Once the server is running, you can test it out by connecting two clients and playing a game.
+Connect to the server with "telnet localhost 8000" and log in with a user name of your choice.
+
+Once you have at least two users connected to the server you can start a game.  Let's say the
+two usernames are alice and bob.  Alice can start a game of tron with the match command:
+
+match bob 2 12 tron
+
+Bob will then see a match request.  The game will not start until Bob types "accept".  Both
+players can then enter moves to play the game.  Moves for each game vary.  Moves for tron are
+a single character, one of "nsew" representing a move to the north, south, east, or west
+respectively.
+
+For information about other commands supported by the server look at the files commands.txt
+and commands.props.  Then read the source code. :)
